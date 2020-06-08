@@ -52,7 +52,7 @@ def get_slices(image, mode = "Transverse"):
 def save_slices(save_path, folder_name, sliced_image, patient_id):
     #save all slices generated from an image  
     for i, image in enumerate(sliced_image):
-        cv2.imwrite(os.path.join(str(save_path), str(folder_name) + "_" + str(patient_id) + "_" + str(i) + ".png"), image) 
+        cv2.imwrite(os.path.join(str(save_path), str(folder_name) + "_" + str(patient_id) + "_" + str(i).zfill(3) + ".png"), image) 
         
 def save_slices_all(path, folder_name):
     #save all slices from a desired folder and generate a new folder to save png files in
