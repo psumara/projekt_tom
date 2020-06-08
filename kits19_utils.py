@@ -10,7 +10,15 @@ def load_image(filename):
     img_nii = nib.load(filename) #load niftii image
     img_numpy = img_nii.get_fdata() #transform niftii format to numpy array
     return img_numpy
-    
+
+def HU_transform(slice, max = 500, min = -500):
+    slice[slice > max] = max
+    slice[slice < min] = min
+    slope = 1 / (max - min)
+    intercept = 0.5
+    slice = slice * slope + intercept
+    return slice 
+
 def generate_center_plot_slices(image):
     #Slice_0 - coronal plane
     #Slice_1 - sagittal plane
@@ -48,6 +56,15 @@ def get_slices(image, mode = "Transverse"):
         image_slices = [image[i, :, :] for i in range(image.shape[0])]
     return image_slices
 
+def get_slices_HU(image, mode = "Transverse", HU_transform = HU_transform):
+    #get image slices in desired plane
+    if (mode == "Coronal"):
+        image_slices = [HU_transform(image[:, i, :]) for i in range(image.shape[1])]
+    elif (mode == "Sagittal"):
+        image_slices = [HU_transform(image[:, :, i]) for i in range(image.shape[2])]
+    elif (mode == "Transverse"):
+        image_slices = [HU_transform(image[i, :, :]) for i in range(image.shape[0])]
+    return image_slices
 
 def save_slices(save_path, folder_name, sliced_image, patient_id):
     #save all slices generated from an image  
@@ -67,5 +84,6 @@ def save_slices_all(path, folder_name):
                 if file.endswith(".nii.gz"):
                     temp = nib.load(file)
                     temp_np = temp.get_fdata()
-                    slices = get_slices(temp_np)
-                    save_slices(new_path, folder_name, slices, i)        
+                    slices = get_slices_HU(temp_np)
+                    save_slices(new_path, folder_name, slices, i)   
+                    
