@@ -31,7 +31,7 @@ def generate_axis_view(image):
     plt.axis("off")
     
     ax[1].imshow(coronal.T, cmap = "gray", origin = "lower")
-    ax[2].set(title = "Coronal plane")
+    ax[1].set(title = "Coronal plane")
     plt.axis("off")
     
     ax[2].imshow(sagittal.T, cmap = "gray", origin = "lower")
