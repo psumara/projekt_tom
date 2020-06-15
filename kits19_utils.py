@@ -18,6 +18,8 @@ def HU_transform(slice, max = 500, min = -500):
     slope = 1 / (max - min)
     intercept = 0.5
     slice = slice * slope + intercept
+    assert np.amax(slice) <= 1
+    assert np.amin(slice) >= 0
     return slice 
 
 def generate_center_plot_slices(image):
@@ -70,7 +72,7 @@ def get_slices_HU(image, mode = "Transverse", HU_transform = HU_transform):
 def save_slices(save_path, folder_name, sliced_image, patient_id):
     #save all slices generated from an image  
     for i, image in enumerate(sliced_image):
-        cv2.imwrite(os.path.join(str(save_path), str(folder_name) + "_" + str(patient_id).zfill(3) + "_" + str(i).zfill(3) + ".jpeg"), image) 
+        plt.imsave(os.path.join(str(save_path), str(folder_name) + "_" + str(patient_id).zfill(3) + "_" + str(i).zfill(3) + ".jpeg"), image) 
         
 def save_slices_all(path, folder_name):
     #save all slices from a desired folder and generate a new folder to save png files in
