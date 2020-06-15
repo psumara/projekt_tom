@@ -83,8 +83,7 @@ def save_slices_all(path, folder_name):
                 pass
             for i, file in enumerate(files):
                 if file.endswith(".nii.gz"):
-                    temp = nib.load(file)
-                    temp_np = temp.get_fdata()
-                    slices = get_slices_HU(temp_np)
+                    temp = load_image(file)
+                    slices = get_slices_HU(temp)
                     save_slices(new_path, folder_name, slices, i)   
                     
