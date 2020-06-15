@@ -9,9 +9,10 @@ import cv2
 def load_image(filename):
     img_nii = nib.load(filename) #load niftii image
     img_numpy = img_nii.get_fdata() #transform niftii format to numpy array
-    return img_numpy
+    return np.asarray(img_numpy, dtype = "float32")
 
 def HU_transform(slice, max = 500, min = -500):
+    slice = slice.astype("float32")
     slice[slice > max] = max
     slice[slice < min] = min
     slope = 1 / (max - min)
